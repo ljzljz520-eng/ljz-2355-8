@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>星城馆 · 导览资料站</title>
+<style>
+  :root { --bg:#0f1420; --card:#18203300; --line:#2a3550; --fg:#e8edf7;
+          --muted:#93a0b8; --ok:#3ecf8e; --warn:#f5a623; --bad:#ff6b6b;
+          --unk:#8ab4ff; --accent:#6ea8ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.6 -apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+         background:var(--bg); color:var(--fg); }
+  header { padding:16px 24px; border-bottom:1px solid var(--line);
+           display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  header h1 { font-size:18px; margin:0; }
+  .clock { display:flex; align-items:center; gap:8px; }
+  input,select,button { background:#121a2b; color:var(--fg);
+        border:1px solid var(--line); border-radius:8px; padding:6px 10px; }
+  button { cursor:pointer; }
+  button:hover { border-color:var(--accent); }
+  main { display:grid; grid-template-columns:260px 1fr 360px; gap:16px;
+         padding:16px 24px; align-items:start; }
+  .card { background:#151d30; border:1px solid var(--line);
+          border-radius:12px; padding:14px; margin-bottom:14px; }
+  .card h2 { font-size:14px; margin:0 0 10px; color:var(--accent); }
+  .floor { margin-bottom:10px; }
+  .floor .f { font-weight:600; }
+  .zone-btn, .ex-btn { display:block; width:100%; text-align:left;
+        background:none; border:0; color:var(--muted); padding:4px 8px;
+        border-radius:6px; font-size:13px; }
+  .zone-btn:hover,.ex-btn:hover { background:#1d2942; color:var(--fg); }
+  .ex-btn.active { background:#203055; color:#fff; }
+  .tag { display:inline-block; font-size:11px; padding:1px 7px;
+         border-radius:99px; margin-right:6px; }
+  .t-ok { background:rgba(62,207,142,.15); color:var(--ok); }
+  .t-warn { background:rgba(245,166,35,.15); color:var(--warn); }
+  .t-bad { background:rgba(255,107,107,.15); color:var(--bad); }
+  .t-unk { background:rgba(138,180,255,.15); color:var(--unk); }
+  pre { white-space:pre-wrap; word-break:break-word; background:#0d1322;
+        border:1px solid var(--line); border-radius:8px; padding:10px;
+        font-size:12px; max-height:260px; overflow:auto; }
+  .route-step { padding:6px 8px; border-left:2px solid var(--line);
+        margin-left:8px; font-size:13px; color:var(--muted); }
+  .cross { border-left-color:var(--warn); color:var(--fg); }
+  .muted { color:var(--muted); font-size:12px; }
+  .err { border:1px solid var(--bad); background:rgba(255,107,107,.08);
+         border-radius:10px; padding:12px; }
+  .err .code { color:var(--bad); font-weight:700; }
+  .asof { color:var(--muted); font-size:12px; }
+  ul.tight { margin:4px 0; padding-left:18px; }
+  .map-cabinet { font-size:34px; text-align:center; padding:18px 0; }
+  .stack { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  label { font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏛️ 星城馆 · 导览资料站</h1>
+  <div class="clock">
+    <label>信息时点</label>
+    <input id="at" type="text" size="24" value="2026-10-02T10:00:00Z"/>
+    <button onclick="setTime('2026-10-02T10:00:00Z')">周五10:00</button>
+    <button onclick="setTime('2026-10-05T11:00:00Z')">移展后</button>
+    <button onclick="setTime(new Date().toISOString())">现在</button>
+  </div>
+  <div class="stack">
+    <label>语言</label><select id="lang"><option>zh</option><option>en</option></select>
+    <label>讲解</label><select id="mode"><option value="short">短讲解</option>
+      <option value="long">长讲解</option></select>
+  </div>
+</header>
+<main>
+  <div>
+    <div class="card"><h2>楼层与展区</h2><div id="floors"></div></div>
+    <div class="card"><h2>展品</h2><div id="exhibits"></div></div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>资料页 <span id="p-tag" class="asof"></span></h2>
+      <div id="page"></div>
+    </div>
+    <div class="card">
+      <h2>按参观时长导览</h2>
+      <div class="stack">
+        <label>时长(分钟)</label><input id="minutes" value="120" size="5"/>
+        <button onclick="plan()">生成导览</button>
+      </div>
+      <div id="plan" style="margin-top:10px"></div>
+    </div>
+  </div>
+  <div>
+    <div class="card"><h2>地图定位（同一布局版）</h2><div id="map"></div></div>
+    <div class="card"><h2>寻路（从门厅）</h2><div id="route"></div></div>
+    <div class="card"><h2>离线包对比</h2><div id="packs"></div></div>
+  </div>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
