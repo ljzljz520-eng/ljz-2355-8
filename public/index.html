@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>时空感知展馆导览资料站</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>展馆导览资料站</h1>
+      <p>同一时点、同一布局版：资料页、地图与路线互不拆版</p>
+    </div>
+    <div class="badges">
+      <span id="layoutBadge" class="badge">布局版 -</span>
+      <span id="timeBadge" class="badge">信息时点 -</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel controls">
+      <h2>查询条件</h2>
+      <label>资料包
+        <select id="packageSelect">
+          <option value="online">在线全量</option>
+          <option value="whole">整馆离线包</option>
+          <option value="route">经典路线包 2.0</option>
+          <option value="route-old">旧路线包 1.0（验收）</option>
+        </select>
+      </label>
+      <label>信息时点
+        <select id="timeSelect">
+          <option value="2026-08-15T10:00:00Z">2026-08-15 10:00（旧布局）</option>
+          <option value="2026-10-01T10:00:00Z" selected>2026-10-01 10:00（跨层维护/C 厅关闭）</option>
+          <option value="2026-10-06T10:00:00Z">2026-10-06 10:00（连接通道维护）</option>
+          <option value="2026-10-20T10:00:00Z">2026-10-20 10:00（临时移位结束）</option>
+          <option value="2027-01-02T10:00:00Z">2027-01-02（超出排期，状态未知）</option>
+        </select>
+      </label>
+      <label>楼层
+        <select id="floorSelect">
+          <option value="">全部</option>
+          <option value="f1">一层</option>
+          <option value="f2">二层</option>
+          <option value="f3">三层</option>
+        </select>
+      </label>
+      <label>展区
+        <select id="zoneSelect"><option value="">全部</option></select>
+      </label>
+      <label>最长讲解
+        <select id="durationSelect">
+          <option value="">不限</option>
+          <option value="3">3 分钟短稿</option>
+          <option value="5">5 分钟内</option>
+          <option value="15">15 分钟内</option>
+        </select>
+      </label>
+      <label>语言
+        <select id="languageSelect">
+          <option value="zh">中文</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <label>讲解
+        <select id="modeSelect">
+          <option value="">长短稿</option>
+          <option value="short">短稿</option>
+          <option value="long">长稿</option>
+        </select>
+      </label>
+      <button id="refreshBtn">刷新资料</button>
+    </section>
+
+    <section class="panel route-panel">
+      <h2>路径服务</h2>
+      <div class="route-controls">
+        <label>起点 <select id="fromSelect"></select></label>
+        <label>终点 <select id="toSelect">
+          <option value="e-bronze">展品：青铜鼎</option>
+          <option value="e-vase">展品：青瓷瓶</option>
+          <option value="e-sword">展品：铁剑</option>
+          <option value="e-lamp">展品：长信灯</option>
+          <option value="e-scroll">展品：山水画卷</option>
+          <option value="f3-hall-a">节点：三层 A 厅</option>
+        </select></label>
+        <button id="routeBtn">计算路线</button>
+      </div>
+      <div id="routeResult" class="result"></div>
+    </section>
+
+    <section class="panel map-panel">
+      <h2>空间库地图</h2>
+      <p class="hint">绿点开放；红点关闭；黄点未知；虚线边不可按开放保证通行。</p>
+      <svg id="map" viewBox="0 0 500 470" role="img" aria-label="展馆地图"></svg>
+      <div id="mapError" class="error hidden"></div>
+    </section>
+
+    <section class="panel docs-panel">
+      <h2>资料列表</h2>
+      <div id="documents" class="cards"></div>
+      <div id="docsError" class="error hidden"></div>
+    </section>
+
+    <section class="panel package-panel">
+      <h2>块清单与断点更新</h2>
+      <pre id="packageInfo"></pre>
+      <div class="buttons">
+        <button id="startUpdateBtn">旧路线包开始更新（完整）</button>
+        <button id="startBrokenBtn">模拟离线缺块</button>
+        <button id="downloadBtn">下载一个分片</button>
+        <button id="activateBtn">尝试激活</button>
+        <button id="rollbackBtn">回滚缓存</button>
+      </div>
+      <div id="updateResult" class="result"></div>
+    </section>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "pavilion-guide",
+  "version": "1.0.0",
+  "description": "时空感知的展馆导览资料站与离线包原型",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/server.js"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  }
+}
